@@ -1,5 +1,8 @@
 import React, { useState } from 'react'
 import './App.css'
+import Header from './components/Header'
+import Hero from './components/Hero'
+import Footer from './components/Footer'
 import TodoForm from './components/TodoForm'
 import TodoList from './components/TodoList'
 import ArchivedList from './components/ArchivedList'
@@ -67,43 +70,59 @@ function App() {
   };
 
   return (
-    <div className="app-container">
-      <h1 className="app-title">Todo List App</h1>
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50 flex flex-col">
+      <Header />
       
-      <TodoForm onAddTodo={addTodo} />
+      <Hero />
       
-      <hr className="section-divider" />
-      
-      <TodoList 
-        todos={todos} 
-        onArchive={archiveTodo} 
-        onDelete={deleteTodoFromList}
-      />
-      
-      <hr className="section-divider" />
-      
-      <ArchivedList 
-        archivedTodos={archivedTodos} 
-        onRestore={restoreFromArchive}
-        onDelete={deleteFromArchive}
-      />
-      
-      <hr className="section-divider" />
-      
-      <button 
-        className="btn-view-deleted" 
-        onClick={() => setShowDeleted(!showDeleted)}
-      >
-        {showDeleted ? 'Hide Deleted' : 'View Deleted'}
-      </button>
-      
-      {showDeleted && (
-        <DeletedList 
-          deletedTodos={deletedTodos}
-          onRestore={restoreFromDeleted}
-          onDeletePermanently={deletePermanently}
+      <main className="flex-grow container mx-auto px-4 py-12 max-w-6xl">
+        <TodoForm onAddTodo={addTodo} />
+        
+        <div className="h-px bg-gradient-to-r from-transparent via-gray-300 to-transparent my-8"></div>
+        
+        <TodoList 
+          todos={todos} 
+          onArchive={archiveTodo} 
+          onDelete={deleteTodoFromList}
         />
-      )}
+        
+        <div className="h-px bg-gradient-to-r from-transparent via-gray-300 to-transparent my-8"></div>
+        
+        <ArchivedList 
+          archivedTodos={archivedTodos} 
+          onRestore={restoreFromArchive}
+          onDelete={deleteFromArchive}
+        />
+        
+        <div className="h-px bg-gradient-to-r from-transparent via-gray-300 to-transparent my-8"></div>
+        
+        <div className="text-center mb-6">
+          <button 
+            onClick={() => setShowDeleted(!showDeleted)}
+            className="group relative inline-flex items-center space-x-3 bg-gradient-to-r from-gray-700 to-gray-900 hover:from-gray-800 hover:to-black text-white font-bold py-4 px-8 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition duration-300"
+          >
+            <svg className={`w-5 h-5 transition-transform duration-300 ${showDeleted ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={showDeleted ? "M5 15l7-7 7 7" : "M19 9l-7 7-7-7"} />
+            </svg>
+            <span>{showDeleted ? 'Hide Deleted Tasks' : 'View Deleted Tasks'}</span>
+            {deletedTodos.length > 0 && (
+              <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full w-7 h-7 flex items-center justify-center animate-pulse">
+                {deletedTodos.length}
+              </span>
+            )}
+          </button>
+        </div>
+        
+        {showDeleted && (
+          <DeletedList 
+            deletedTodos={deletedTodos}
+            onRestore={restoreFromDeleted}
+            onDeletePermanently={deletePermanently}
+          />
+        )}
+      </main>
+      
+      <Footer />
     </div>
   )
 }
